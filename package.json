@@ -41,7 +41,7 @@
     "prettier": "2.6.2",
     "reflect-metadata": "0.1.13",
     "ts-loader": "9.3.0",
-    "ts-node": "10.7.0",
+    "ts-node": "10.8.0",
     "ts-node-dev": "1.1.8",
     "typeorm": "0.3.6",
     "typeorm-naming-strategies": "4.1.0",
