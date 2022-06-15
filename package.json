@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@types/config": "0.0.41",
-    "@types/node": "16.11.39",
+    "@types/node": "16.11.40",
     "@types/node-cron": "3.0.1",
     "@types/utf8": "3.0.1",
     "@typescript-eslint/eslint-plugin": "5.28.0",
