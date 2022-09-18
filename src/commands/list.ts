@@ -4,7 +4,11 @@ import {
   SlashCommandIntegerOption,
   SlashCommandSubcommandBuilder,
 } from '@discordjs/builders'
-import { CacheType, CommandInteraction, MessageEmbed } from 'discord.js'
+import {
+  CacheType,
+  ChatInputCommandInteraction,
+  EmbedBuilder,
+} from 'discord.js'
 import { BaseCommand, Permission } from '.'
 
 export class ListCommand implements BaseCommand {
@@ -25,7 +29,9 @@ export class ListCommand implements BaseCommand {
     return null
   }
 
-  async execute(interaction: CommandInteraction<CacheType>): Promise<void> {
+  async execute(
+    interaction: ChatInputCommandInteraction<CacheType>
+  ): Promise<void> {
     await interaction.deferReply({
       ephemeral: true,
     })
@@ -41,14 +47,14 @@ export class ListCommand implements BaseCommand {
       return
     }
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setTitle('対象時刻一覧')
       .setColor('#00ff00')
       .setTimestamp()
     for (const item of items) {
-      embed.addField(
-        item.name,
-        `\`\`\`\n${item.text}\n\`\`\`\n・基準時刻: \`${
+      embed.addFields({
+        name: item.name,
+        value: `\`\`\`\n${item.text}\n\`\`\`\n・基準時刻: \`${
           item.base
         }\`\n・有効期間: \`${item.start}\` ～ \`${
           item.end
@@ -56,8 +62,8 @@ export class ListCommand implements BaseCommand {
           item.createdAt,
           'yyyy/MM/dd HH:mm:ss'
         )}\``,
-        true
-      )
+        inline: true,
+      })
     }
 
     await interaction.editReply({

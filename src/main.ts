@@ -1,10 +1,4 @@
-import {
-  CacheType,
-  Client,
-  CommandInteraction,
-  Intents,
-  Message,
-} from 'discord.js'
+import { Client, Message } from 'discord.js'
 import cron from 'node-cron'
 import 'reflect-metadata'
 import { registerCommands, router } from './commands'
@@ -24,7 +18,7 @@ import { addItem, AppDataSource, calcRank, isTodayTried } from './mysql'
 import { parseTime, TimeData } from './times'
 
 const client = new Client({
-  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+  intents: ['Guilds', 'GuildMessages', 'MessageContent'],
 })
 export let TIMES: TimeData[] = []
 
@@ -77,9 +71,11 @@ client.on('messageCreate', async (message: Message) => {
 })
 
 client.on('interactionCreate', async (interaction) => {
-  if (!interaction.isCommand()) return
+  if (!interaction.isChatInputCommand()) {
+    return
+  }
 
-  await router(interaction as CommandInteraction<CacheType>)
+  await router(interaction)
 })
 
 export async function loadTimes() {

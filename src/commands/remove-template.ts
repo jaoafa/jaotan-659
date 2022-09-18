@@ -4,7 +4,11 @@ import {
   SlashCommandStringOption,
   SlashCommandSubcommandBuilder,
 } from '@discordjs/builders'
-import { CacheType, CommandInteraction, MessageEmbed } from 'discord.js'
+import {
+  CacheType,
+  ChatInputCommandInteraction,
+  EmbedBuilder,
+} from 'discord.js'
 import { BaseCommand, Permission } from '.'
 
 export class RemoveTemplateCommand implements BaseCommand {
@@ -29,7 +33,9 @@ export class RemoveTemplateCommand implements BaseCommand {
     ]
   }
 
-  async execute(interaction: CommandInteraction<CacheType>): Promise<void> {
+  async execute(
+    interaction: ChatInputCommandInteraction<CacheType>
+  ): Promise<void> {
     await interaction.deferReply({
       ephemeral: true,
     })
@@ -53,7 +59,7 @@ export class RemoveTemplateCommand implements BaseCommand {
     await interaction.editReply(':white_check_mark:')
     await interaction.channel.send({
       embeds: [
-        new MessageEmbed()
+        new EmbedBuilder()
           .setTitle('テンプレート登録解除完了')
           .setDescription(`\`${name}\`を登録解除しました。`)
           .setColor('#00ff00')

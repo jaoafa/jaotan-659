@@ -148,7 +148,7 @@ export async function sendTemplate(template: DBSendTemplate) {
     console.error('channel not found')
     return
   }
-  if (!channelAny.isText()) {
+  if (!(channelAny instanceof TextChannel)) {
     console.error('channel is not text channel')
     return
   }

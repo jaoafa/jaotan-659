@@ -4,7 +4,11 @@ import {
   SlashCommandStringOption,
   SlashCommandSubcommandBuilder,
 } from '@discordjs/builders'
-import { CacheType, CommandInteraction, MessageEmbed } from 'discord.js'
+import {
+  CacheType,
+  ChatInputCommandInteraction,
+  EmbedBuilder,
+} from 'discord.js'
 import cron from 'node-cron'
 import { BaseCommand, Permission } from '.'
 
@@ -42,7 +46,9 @@ export class AddTemplateCommand implements BaseCommand {
     ]
   }
 
-  async execute(interaction: CommandInteraction<CacheType>): Promise<void> {
+  async execute(
+    interaction: ChatInputCommandInteraction<CacheType>
+  ): Promise<void> {
     await interaction.deferReply({
       ephemeral: true,
     })
@@ -76,12 +82,22 @@ export class AddTemplateCommand implements BaseCommand {
     await interaction.editReply(':white_check_mark:')
     await interaction.channel.send({
       embeds: [
-        new MessageEmbed()
+        new EmbedBuilder()
           .setTitle('テンプレート登録完了')
           .setDescription(`\`${name}\`を登録しました。`)
           .setColor('#00ff00')
-          .addField('テキスト', `\`\`\`\n${text}\n\`\`\``, true)
-          .addField('スケジュール', `\`${schedule}\``, true)
+          .addFields(
+            {
+              name: 'テキスト',
+              value: `\`\`\`\n${text}\n\`\`\``,
+              inline: true,
+            },
+            {
+              name: 'スケジュール',
+              value: `\`${schedule}\``,
+              inline: true,
+            }
+          )
           .setFooter({
             text: interaction.user.tag,
             iconURL: interaction.user.avatarURL(),

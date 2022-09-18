@@ -4,7 +4,11 @@ import {
   SlashCommandBuilder,
   SlashCommandSubcommandBuilder,
 } from '@discordjs/builders'
-import { CacheType, CommandInteraction, PermissionResolvable } from 'discord.js'
+import {
+  CacheType,
+  ChatInputCommandInteraction,
+  PermissionResolvable,
+} from 'discord.js'
 import { AddTemplateCommand } from './add-template'
 import { ListCommand } from './list'
 import { ListTemplateCommand } from './list-template'
@@ -23,7 +27,9 @@ export abstract class BaseCommand {
   /** 権限: サブコマンドの実行に必要なユーザー・ロール・パーミッション。NULLが指定された場合はすべて許可 */
   abstract get permissions(): Permission[] | null
   /** 実行: サブコマンドの実行定義 */
-  abstract execute(interaction: CommandInteraction<CacheType>): Promise<void>
+  abstract execute(
+    interaction: ChatInputCommandInteraction<CacheType>
+  ): Promise<void>
 }
 
 const routes: BaseCommand[] = [
@@ -51,7 +57,9 @@ export async function registerCommands() {
   )
 }
 
-export async function router(interaction: CommandInteraction<CacheType>) {
+export async function router(
+  interaction: ChatInputCommandInteraction<CacheType>
+) {
   if (interaction.command.name !== '659') {
     return
   }

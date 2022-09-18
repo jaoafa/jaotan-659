@@ -5,7 +5,11 @@ import {
   SlashCommandStringOption,
   SlashCommandSubcommandBuilder,
 } from '@discordjs/builders'
-import { CacheType, CommandInteraction, MessageEmbed } from 'discord.js'
+import {
+  CacheType,
+  ChatInputCommandInteraction,
+  EmbedBuilder,
+} from 'discord.js'
 import { BaseCommand, Permission } from '.'
 
 export class RegisterCommand implements BaseCommand {
@@ -53,10 +57,24 @@ export class RegisterCommand implements BaseCommand {
           .setDescription(
             'マッチ種別（テキストとの比較条件。指定しない場合INCLUDE）'
           )
-          .addChoice('完全一致', 'EQUAL')
-          .addChoice('前方一致', 'START')
-          .addChoice('後方一致', 'END')
-          .addChoice('部分一致', 'INCLUDE')
+          .addChoices(
+            {
+              name: '完全一致',
+              value: 'EQUAL',
+            },
+            {
+              name: '前方一致',
+              value: 'START',
+            },
+            {
+              name: '後方一致',
+              value: 'END',
+            },
+            {
+              name: '部分一致',
+              value: 'INCLUDE',
+            }
+          )
           .setRequired(false)
       )
   }
@@ -70,7 +88,9 @@ export class RegisterCommand implements BaseCommand {
     ]
   }
 
-  async execute(interaction: CommandInteraction<CacheType>): Promise<void> {
+  async execute(
+    interaction: ChatInputCommandInteraction<CacheType>
+  ): Promise<void> {
     await interaction.deferReply({
       ephemeral: true,
     })
@@ -113,16 +133,42 @@ export class RegisterCommand implements BaseCommand {
     await interaction.editReply(':white_check_mark:')
     await interaction.channel.send({
       embeds: [
-        new MessageEmbed()
+        new EmbedBuilder()
           .setTitle('対象時刻登録完了')
           .setDescription(`\`${name}\` を登録しました。`)
           .setColor('#00ff00')
-          .addField('名前', `\`${name}\``, true)
-          .addField('テキスト', `\`\`\`\n${text}\n\`\`\``, true)
-          .addField('基準時刻', `\`${base}\``, true)
-          .addField('有効期間の開始時刻', `\`${start}\``, true)
-          .addField('有効期間の終了時刻', `\`${end}\``, true)
-          .addField('マッチ種別', `\`${matchType}\``, true)
+          .addFields(
+            {
+              name: '名前',
+              value: `\`${name}\``,
+              inline: true,
+            },
+            {
+              name: 'テキスト',
+              value: `\`\`\`\n${text}\n\`\`\``,
+              inline: true,
+            },
+            {
+              name: '基準時刻',
+              value: `\`${base}\``,
+              inline: true,
+            },
+            {
+              name: '有効期間の開始時刻',
+              value: `\`${start}\``,
+              inline: true,
+            },
+            {
+              name: '有効期間の終了時刻',
+              value: `\`${end}\``,
+              inline: true,
+            },
+            {
+              name: 'マッチ種別',
+              value: `\`${matchType}\``,
+              inline: true,
+            }
+          )
           .setFooter({
             text: interaction.user.tag,
             iconURL: interaction.user.avatarURL(),
