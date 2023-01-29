@@ -118,7 +118,12 @@ async function main() {
 }
 
 ;(async () => {
-  await main().finally(async () => {
-    await AppDataSource.destroy()
-  })
+  await main()
+    .catch((error) => {
+      console.error(error)
+      process.exitCode = 1
+    })
+    .finally(async () => {
+      await AppDataSource.destroy()
+    })
 })()

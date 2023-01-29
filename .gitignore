@@ -6,3 +6,4 @@ config/*
 !config/.gitkeep
 yarn-error.log
 mariadb-data/
+output/
