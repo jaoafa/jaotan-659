@@ -32,7 +32,7 @@
     "@vercel/ncc": "0.36.1",
     "config": "3.3.9",
     "cross-env": "7.0.3",
-    "discord.js": "14.8.0",
+    "discord.js": "14.9.0",
     "eslint": "8.37.0",
     "eslint-config-prettier": "8.8.0",
     "eslint-config-standard": "17.0.0",
