@@ -9,7 +9,20 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-"@discordjs/builders@1.6.1", "@discordjs/builders@^1.6.0":
+"@discordjs/builders@1.6.2":
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/@discordjs/builders/-/builders-1.6.2.tgz#7398ead9af279c4712744f6ef142cb08fa3fa9f0"
+  integrity sha512-jXcQR+xJZS4R6Io328G9lpBxy+RTtPsxJLP2JnAxiUnj9v8iF2FX1rmkz3tdcr7JBlySUgEwsR/kPwpEYWj2Ew==
+  dependencies:
+    "@discordjs/formatters" "^0.3.0"
+    "@discordjs/util" "^0.2.0"
+    "@sapphire/shapeshift" "^3.8.2"
+    discord-api-types "^0.37.41"
+    fast-deep-equal "^3.1.3"
+    ts-mixer "^6.0.3"
+    tslib "^2.5.0"
+
+"@discordjs/builders@^1.6.0":
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/@discordjs/builders/-/builders-1.6.1.tgz#5b1447cfa493bc1306671ef18ce3aae13c0af0ba"
   integrity sha512-CCcLwn/8ANhlAbhlE18fcaN0hfXTen53/JiwZs1t9oE/Cqa9maA8ZRarkCIsXF4J7J/MYnd0J6IsxeKsq+f6mw==
@@ -152,6 +165,14 @@
   version "3.8.1"
   resolved "https://registry.yarnpkg.com/@sapphire/shapeshift/-/shapeshift-3.8.1.tgz#b98dc6a7180f9b38219267917b2e6fa33f9ec656"
   integrity sha512-xG1oXXBhCjPKbxrRTlox9ddaZTvVpOhYLmKmApD/vIWOV1xEYXnpoFs68zHIZBGbqztq6FrUPNPerIrO1Hqeaw==
+  dependencies:
+    fast-deep-equal "^3.1.3"
+    lodash "^4.17.21"
+
+"@sapphire/shapeshift@^3.8.2":
+  version "3.8.2"
+  resolved "https://registry.yarnpkg.com/@sapphire/shapeshift/-/shapeshift-3.8.2.tgz#f9f25cba74c710b56f8790de76a9642a9635e7db"
+  integrity sha512-NXpnJAsxN3/h9TqQPntOeVWZrpIuucqXI3IWF6tj2fWCoRLCuVK5wx7Dtg7pRrtkYfsMUbDqgKoX26vrC5iYfA==
   dependencies:
     fast-deep-equal "^3.1.3"
     lodash "^4.17.21"
@@ -709,6 +730,11 @@ discord-api-types@^0.37.37:
   version "0.37.37"
   resolved "https://registry.yarnpkg.com/discord-api-types/-/discord-api-types-0.37.37.tgz#49bc42a36124c85f06297f1548f130329ed5aeb0"
   integrity sha512-LDMBKzl/zbvHO/yCzno5hevuA6lFIXJwdKSJZQrB+1ToDpFfN9thK+xxgZNR4aVkI7GHRDja0p4Sl2oYVPnHYg==
+
+discord-api-types@^0.37.41:
+  version "0.37.41"
+  resolved "https://registry.yarnpkg.com/discord-api-types/-/discord-api-types-0.37.41.tgz#b2719aa25ba6c5794d08524742ab008224b03710"
+  integrity sha512-FaPGBK9hx3zqSRX1x3KQWj+OElAJKmcyyfcdCy+U4AKv+gYuIkRySM7zd1So2sE4gc1DikkghkSBgBgKh6pe4Q==
 
 discord.js@14.9.0:
   version "14.9.0"
