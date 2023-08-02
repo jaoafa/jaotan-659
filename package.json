@@ -12,7 +12,7 @@
     "compile": "tsc -p .",
     "compile:test": "tsc -p . --noEmit",
     "package": "run-s clean compile packing",
-    "packing": "ncc build ./dist/main.js -o output/ -m -s",
+    "packing": "ncc build ./dist/main.js -o output/",
     "clean": "rimraf dist output",
     "lint": "run-p -c lint:prettier lint:eslint lint:tsc",
     "lint:prettier": "prettier --check src",
