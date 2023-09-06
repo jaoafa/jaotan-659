@@ -29,7 +29,7 @@
     "@types/node-cron": "3.0.8",
     "@typescript-eslint/eslint-plugin": "6.6.0",
     "@typescript-eslint/parser": "6.6.0",
-    "@vercel/ncc": "0.36.1",
+    "@vercel/ncc": "0.37.0",
     "config": "3.3.9",
     "cross-env": "7.0.3",
     "discord.js": "14.11.0",
