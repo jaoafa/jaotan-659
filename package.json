@@ -25,7 +25,7 @@
   "devDependencies": {
     "@discordjs/builders": "1.6.5",
     "@types/config": "3.3.1",
-    "@types/node": "18.17.17",
+    "@types/node": "18.17.18",
     "@types/node-cron": "3.0.8",
     "@typescript-eslint/eslint-plugin": "6.7.2",
     "@typescript-eslint/parser": "6.7.2",
