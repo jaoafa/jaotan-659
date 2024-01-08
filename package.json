@@ -39,7 +39,7 @@
     "eslint-plugin-import": "2.29.1",
     "eslint-plugin-n": "16.6.1",
     "eslint-plugin-promise": "6.1.1",
-    "mysql2": "3.6.5",
+    "mysql2": "3.7.0",
     "node-cron": "3.0.3",
     "prettier": "2.8.8",
     "reflect-metadata": "0.2.1",
