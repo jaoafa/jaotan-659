@@ -4,12 +4,8 @@ import {
   SlashCommandIntegerOption,
   SlashCommandSubcommandBuilder,
 } from '@discordjs/builders'
-import {
-  CacheType,
-  ChatInputCommandInteraction,
-  EmbedBuilder,
-} from 'discord.js'
-import { BaseCommand, Permission } from '.'
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
+import { BaseCommand } from '.'
 
 export class ListCommand implements BaseCommand {
   get definition(): SlashCommandSubcommandBuilder {
@@ -25,18 +21,14 @@ export class ListCommand implements BaseCommand {
       )
   }
 
-  get permissions(): Permission[] {
-    return null
-  }
+  readonly permissions = null
 
-  async execute(
-    interaction: ChatInputCommandInteraction<CacheType>
-  ): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     await interaction.deferReply({
       ephemeral: true,
     })
 
-    const page = interaction.options.getInteger('page', false) || 1
+    const page = interaction.options.getInteger('page', false) ?? 1
 
     const items = await DBCategory.find({
       skip: (page - 1) * 20,

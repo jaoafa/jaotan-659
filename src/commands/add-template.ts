@@ -4,11 +4,7 @@ import {
   SlashCommandStringOption,
   SlashCommandSubcommandBuilder,
 } from '@discordjs/builders'
-import {
-  CacheType,
-  ChatInputCommandInteraction,
-  EmbedBuilder,
-} from 'discord.js'
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
 import cron from 'node-cron'
 import { BaseCommand, Permission } from '.'
 
@@ -46,16 +42,18 @@ export class AddTemplateCommand implements BaseCommand {
     ]
   }
 
-  async execute(
-    interaction: ChatInputCommandInteraction<CacheType>
-  ): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+    if (!interaction.channel) {
+      return
+    }
     await interaction.deferReply({
       ephemeral: true,
     })
 
-    const name = interaction.options.getString('name')
-    const text = interaction.options.getString('text').replaceAll('\\n', '\n')
-    const schedule = interaction.options.getString('cron')
+    const name = interaction.options.getString('name') ?? ''
+    const text =
+      interaction.options.getString('text')?.replaceAll('\\n', '\n') ?? ''
+    const schedule = interaction.options.getString('cron') ?? ''
 
     const count = await DBSendTemplate.count({
       where: [{ name }, { cron: schedule }],
@@ -73,8 +71,8 @@ export class AddTemplateCommand implements BaseCommand {
     template.name = name
     template.text = text
     template.cron = schedule
-    await template.save().catch(async (e) => {
-      console.error(e)
+    await template.save().catch(async (error: unknown) => {
+      console.error(error)
       await interaction.editReply('エラー: 登録に失敗しました。')
     })
     await scheduleSendTemplates()
@@ -100,7 +98,8 @@ export class AddTemplateCommand implements BaseCommand {
           )
           .setFooter({
             text: interaction.user.tag,
-            iconURL: interaction.user.avatarURL(),
+            iconURL:
+              interaction.user.avatarURL() ?? interaction.user.defaultAvatarURL,
           })
           .setTimestamp(),
       ],

@@ -5,11 +5,7 @@ import {
   SlashCommandStringOption,
   SlashCommandSubcommandBuilder,
 } from '@discordjs/builders'
-import {
-  CacheType,
-  ChatInputCommandInteraction,
-  EmbedBuilder,
-} from 'discord.js'
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
 import { BaseCommand, Permission } from '.'
 
 export class RegisterCommand implements BaseCommand {
@@ -88,19 +84,21 @@ export class RegisterCommand implements BaseCommand {
     ]
   }
 
-  async execute(
-    interaction: ChatInputCommandInteraction<CacheType>
-  ): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+    if (!interaction.channel) {
+      return
+    }
     await interaction.deferReply({
       ephemeral: true,
     })
 
-    const name = interaction.options.getString('name')
-    const text = interaction.options.getString('text').replaceAll('\\n', '\n')
-    const base = interaction.options.getString('base')
-    const start = interaction.options.getString('start')
-    const end = interaction.options.getString('end')
-    const matchType = (interaction.options.getString('match_type', false) ||
+    const name = interaction.options.getString('name') ?? ''
+    const text =
+      interaction.options.getString('text')?.replaceAll('\\n', '\n') ?? ''
+    const base = interaction.options.getString('base') ?? ''
+    const start = interaction.options.getString('start') ?? ''
+    const end = interaction.options.getString('end') ?? ''
+    const matchType = (interaction.options.getString('match_type', false) ??
       'INCLUDE') as DBCategory['matchType']
 
     if (!isTimeFormat(base) || !isTimeFormat(start) || !isTimeFormat(end)) {
@@ -124,8 +122,8 @@ export class RegisterCommand implements BaseCommand {
     category.start = start
     category.end = end
     category.matchType = matchType
-    await category.save().catch(async (e) => {
-      console.error(e)
+    await category.save().catch(async (error: unknown) => {
+      console.error(error)
       await interaction.editReply('エラー: 登録に失敗しました。')
     })
     await loadTimes()
@@ -171,7 +169,8 @@ export class RegisterCommand implements BaseCommand {
           )
           .setFooter({
             text: interaction.user.tag,
-            iconURL: interaction.user.avatarURL(),
+            iconURL:
+              interaction.user.avatarURL() ?? interaction.user.defaultAvatarURL,
           })
           .setTimestamp(),
       ],

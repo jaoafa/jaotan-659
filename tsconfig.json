@@ -1,5 +1,4 @@
 {
-  "ts-node": { "files": true },
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
@@ -23,7 +22,7 @@
     "noFallthroughCasesInSwitch": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
     "baseUrl": ".",
     "newLine": "LF",
     "paths": {

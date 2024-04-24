@@ -17,11 +17,11 @@ export interface TimeData {
 
 export function parseTime(text: string) {
   const items = text.split(':')
-  const hour = parseInt(items[0], 10)
-  const minute = parseInt(items[1], 10)
+  const hour = Number.parseInt(items[0], 10)
+  const minute = Number.parseInt(items[1], 10)
   const temp = items[2].split('.')
-  const second = parseInt(temp[0], 10)
-  const millisecond = parseInt(temp[1], 10)
+  const second = Number.parseInt(temp[0], 10)
+  const millisecond = Number.parseInt(temp[1], 10)
   return {
     hour,
     minute,

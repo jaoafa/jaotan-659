@@ -46,8 +46,8 @@ export async function getDBConnection(): Promise<mysql.Connection | null> {
     await connection.beginTransaction()
 
     return connection
-  } catch (e) {
-    console.error(e)
+  } catch (error) {
+    console.error(error)
     return null
   }
 }
@@ -72,7 +72,8 @@ export async function addItem(
     newUser.userId = Number(message.author.id)
     newUser.username = message.author.username
     newUser.discriminator = message.author.discriminator
-    newUser.avatarUrl = message.author.avatarURL()
+    newUser.avatarUrl =
+      message.author.avatarURL() ?? message.author.defaultAvatarURL
     user = await newUser.save()
   }
 
@@ -101,6 +102,7 @@ export async function isTodayTried(
         categoryId: Number(category.categoryId),
       },
       postedAt:
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         MoreThanOrEqual(new Date(new Date().setHours(0, 0, 0, 0))) ||
         LessThanOrEqual(new Date(new Date().setHours(23, 59, 59, 999))),
     },
