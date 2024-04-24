@@ -19,7 +19,7 @@ export function getTodayDate(time: Time): Date {
     time.hour,
     time.minute,
     time.second,
-    time.millisecond
+    time.millisecond,
   )
 }
 
@@ -36,7 +36,7 @@ export function getTimeData(
   TIMES: TimeData[],
   text: string,
   date: Date,
-  isValid: boolean
+  isValid: boolean,
 ): TimeData | null {
   const times = TIMES.filter((time) => {
     switch (time.type) {
@@ -95,16 +95,16 @@ export function isTimeFormat(str: string) {
 
 export function getPaddedDate(date: Date): string {
   return `${paddingZero(date.getHours())}:${paddingZero(
-    date.getMinutes()
+    date.getMinutes(),
   )}:${paddingZero(date.getSeconds())}.${paddingZero(
     date.getMilliseconds(),
-    3
+    3,
   )}`
 }
 
 export function getPaddedTime(time: Time): string {
   return `${paddingZero(time.hour)}:${paddingZero(time.minute)}:${paddingZero(
-    time.second
+    time.second,
   )}.${paddingZero(time.millisecond, 3)}`
 }
 
@@ -112,21 +112,21 @@ export function formatDate(date: Date, format: string): string {
   format = format.replaceAll('yyyy', String(date.getFullYear()))
   format = format.replaceAll(
     'MM',
-    ('0' + (date.getMonth() + 1).toString()).slice(-2)
+    ('0' + (date.getMonth() + 1).toString()).slice(-2),
   )
   format = format.replaceAll('dd', ('0' + date.getDate().toString()).slice(-2))
   format = format.replaceAll('HH', ('0' + date.getHours().toString()).slice(-2))
   format = format.replaceAll(
     'mm',
-    ('0' + date.getMinutes().toString()).slice(-2)
+    ('0' + date.getMinutes().toString()).slice(-2),
   )
   format = format.replaceAll(
     'ss',
-    ('0' + date.getSeconds().toString()).slice(-2)
+    ('0' + date.getSeconds().toString()).slice(-2),
   )
   format = format.replaceAll(
     'SSS',
-    ('00' + date.getMilliseconds().toString()).slice(-3)
+    ('00' + date.getMilliseconds().toString()).slice(-3),
   )
   return format
 }

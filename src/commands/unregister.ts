@@ -16,7 +16,7 @@ export class UnregisterCommand implements BaseCommand {
         new SlashCommandStringOption()
           .setName('name')
           .setDescription('時刻名')
-          .setRequired(true)
+          .setRequired(true),
       )
   }
 

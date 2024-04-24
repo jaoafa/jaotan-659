@@ -17,19 +17,19 @@ export class AddTemplateCommand implements BaseCommand {
         new SlashCommandStringOption()
           .setName('name')
           .setDescription('テンプレート名')
-          .setRequired(true)
+          .setRequired(true),
       )
       .addStringOption(
         new SlashCommandStringOption()
           .setName('text')
           .setDescription('テキスト（改行は \\n を利用）')
-          .setRequired(true)
+          .setRequired(true),
       )
       .addStringOption(
         new SlashCommandStringOption()
           .setName('cron')
           .setDescription('スケジュール（CRON形式）')
-          .setRequired(true)
+          .setRequired(true),
       )
   }
 
@@ -94,7 +94,7 @@ export class AddTemplateCommand implements BaseCommand {
               name: 'スケジュール',
               value: `\`${schedule}\``,
               inline: true,
-            }
+            },
           )
           .setFooter({
             text: interaction.user.tag,

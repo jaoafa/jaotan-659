@@ -50,7 +50,7 @@ export async function registerCommands() {
   }
   await client.application.commands.set(
     [builder.toJSON()],
-    configuration.DISCORD_GUILD_ID
+    configuration.DISCORD_GUILD_ID,
   )
 }
 
@@ -67,7 +67,7 @@ export async function router(interaction: ChatInputCommandInteraction) {
   }
   console.log(interaction.command.name, interaction.options.getSubcommand())
   const command = routes.find(
-    (route) => route.definition.name === interaction.options.getSubcommand()
+    (route) => route.definition.name === interaction.options.getSubcommand(),
   )
   if (!command) return
   if (interaction.channelId !== configuration.DISCORD_CHANNEL_ID) {
@@ -92,7 +92,7 @@ export async function router(interaction: ChatInputCommandInteraction) {
           }
           case 'PERMISSION': {
             return member.permissions.has(
-              permission.identifier as PermissionResolvable
+              permission.identifier as PermissionResolvable,
             )
           }
         }

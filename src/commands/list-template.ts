@@ -17,7 +17,7 @@ export class ListTemplateCommand implements BaseCommand {
           .setName('page')
           .setDescription('ページ')
           .setMinValue(1)
-          .setRequired(false)
+          .setRequired(false),
       )
   }
 
@@ -50,7 +50,7 @@ export class ListTemplateCommand implements BaseCommand {
           item.cron
         }\`\n・登録日時: \`${formatDate(
           item.createdAt,
-          'yyyy/MM/dd HH:mm:ss'
+          'yyyy/MM/dd HH:mm:ss',
         )}\``,
         inline: true,
       })

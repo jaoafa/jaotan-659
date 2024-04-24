@@ -44,16 +44,16 @@ client.on('messageCreate', async (message: Message) => {
         message,
         timeData.category,
         Math.abs(
-          message.createdAt.getTime() - getTodayDate(timeData.base).getTime()
-        )
+          message.createdAt.getTime() - getTodayDate(timeData.base).getTime(),
+        ),
       )
       await message.reply(
         `${getPaddedDate(message.createdAt)} (\`${getPaddedTime(
-          timeData.base
+          timeData.base,
         )}\` との差: \`${getTimeDiffText(
           timeData,
-          message.createdAt
-        )}\` | ${await calcRank(record)}位)`
+          message.createdAt,
+        )}\` | ${await calcRank(record)}位)`,
       )
       return
     }

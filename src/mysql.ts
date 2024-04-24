@@ -55,7 +55,7 @@ export async function getDBConnection(): Promise<mysql.Connection | null> {
 export async function addItem(
   message: Message,
   category: DBCategory,
-  diff: number
+  diff: number,
 ): Promise<DBRecord> {
   console.log(`addItem: ${message.author.tag} ${category.name} ${diff}`)
   // データ追加
@@ -90,7 +90,7 @@ export async function addItem(
 export async function isTodayTried(
   user: User,
   category: DBCategory,
-  dbRecordRepo: Repository<DBRecord>
+  dbRecordRepo: Repository<DBRecord>,
 ): Promise<boolean> {
   // 既にデータがあるかどうか、トライ済みか？
   const dbRecord = await dbRecordRepo.findOne({

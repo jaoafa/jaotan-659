@@ -16,7 +16,7 @@ export class RemoveTemplateCommand implements BaseCommand {
         new SlashCommandStringOption()
           .setName('name')
           .setDescription('テンプレート名')
-          .setRequired(true)
+          .setRequired(true),
       )
   }
 
@@ -40,7 +40,7 @@ export class RemoveTemplateCommand implements BaseCommand {
     const name = interaction.options.getString('name')
     if (!name) {
       await interaction.editReply(
-        'エラー: テンプレート名が指定されていません。'
+        'エラー: テンプレート名が指定されていません。',
       )
       return
     }

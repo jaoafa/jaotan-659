@@ -17,41 +17,41 @@ export class RegisterCommand implements BaseCommand {
         new SlashCommandStringOption()
           .setName('name')
           .setDescription('時刻名')
-          .setRequired(true)
+          .setRequired(true),
       )
       .addStringOption(
         new SlashCommandStringOption()
           .setName('text')
           .setDescription('テキスト（改行は \\n を利用）')
-          .setRequired(true)
+          .setRequired(true),
       )
       .addStringOption(
         new SlashCommandStringOption()
           .setName('base')
           .setDescription('基準時刻（HH:mm:ss.SSSの形式。例: 06:59:59.999）')
-          .setRequired(true)
+          .setRequired(true),
       )
       .addStringOption(
         new SlashCommandStringOption()
           .setName('start')
           .setDescription(
-            '有効期間の開始時刻（HH:mm:ss.SSSの形式。例: 06:59:59.999）'
+            '有効期間の開始時刻（HH:mm:ss.SSSの形式。例: 06:59:59.999）',
           )
-          .setRequired(true)
+          .setRequired(true),
       )
       .addStringOption(
         new SlashCommandStringOption()
           .setName('end')
           .setDescription(
-            '有効期間の終了時刻（HH:mm:ss.SSSの形式。例: 06:59:59.999）'
+            '有効期間の終了時刻（HH:mm:ss.SSSの形式。例: 06:59:59.999）',
           )
-          .setRequired(true)
+          .setRequired(true),
       )
       .addStringOption(
         new SlashCommandStringOption()
           .setName('match_type')
           .setDescription(
-            'マッチ種別（テキストとの比較条件。指定しない場合INCLUDE）'
+            'マッチ種別（テキストとの比較条件。指定しない場合INCLUDE）',
           )
           .addChoices(
             {
@@ -69,9 +69,9 @@ export class RegisterCommand implements BaseCommand {
             {
               name: '部分一致',
               value: 'INCLUDE',
-            }
+            },
           )
-          .setRequired(false)
+          .setRequired(false),
       )
   }
 
@@ -165,7 +165,7 @@ export class RegisterCommand implements BaseCommand {
               name: 'マッチ種別',
               value: `\`${matchType}\``,
               inline: true,
-            }
+            },
           )
           .setFooter({
             text: interaction.user.tag,
