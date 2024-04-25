@@ -46,8 +46,8 @@ export async function getDBConnection(): Promise<mysql.Connection | null> {
     await connection.beginTransaction()
 
     return connection
-  } catch (e) {
-    console.error(e)
+  } catch (error) {
+    console.error(error)
     return null
   }
 }
@@ -55,7 +55,7 @@ export async function getDBConnection(): Promise<mysql.Connection | null> {
 export async function addItem(
   message: Message,
   category: DBCategory,
-  diff: number
+  diff: number,
 ): Promise<DBRecord> {
   console.log(`addItem: ${message.author.tag} ${category.name} ${diff}`)
   // データ追加
@@ -72,7 +72,8 @@ export async function addItem(
     newUser.userId = Number(message.author.id)
     newUser.username = message.author.username
     newUser.discriminator = message.author.discriminator
-    newUser.avatarUrl = message.author.avatarURL()
+    newUser.avatarUrl =
+      message.author.avatarURL() ?? message.author.defaultAvatarURL
     user = await newUser.save()
   }
 
@@ -89,7 +90,7 @@ export async function addItem(
 export async function isTodayTried(
   user: User,
   category: DBCategory,
-  dbRecordRepo: Repository<DBRecord>
+  dbRecordRepo: Repository<DBRecord>,
 ): Promise<boolean> {
   // 既にデータがあるかどうか、トライ済みか？
   const dbRecord = await dbRecordRepo.findOne({
@@ -101,6 +102,7 @@ export async function isTodayTried(
         categoryId: Number(category.categoryId),
       },
       postedAt:
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         MoreThanOrEqual(new Date(new Date().setHours(0, 0, 0, 0))) ||
         LessThanOrEqual(new Date(new Date().setHours(23, 59, 59, 999))),
     },

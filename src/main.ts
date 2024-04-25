@@ -26,7 +26,7 @@ export function getClient() {
   return client
 }
 
-client.on('ready', async () => {
+client.on('ready', () => {
   console.log(`ready: ${client.user?.tag}`)
 })
 
@@ -44,16 +44,16 @@ client.on('messageCreate', async (message: Message) => {
         message,
         timeData.category,
         Math.abs(
-          message.createdAt.getTime() - getTodayDate(timeData.base).getTime()
-        )
+          message.createdAt.getTime() - getTodayDate(timeData.base).getTime(),
+        ),
       )
-      message.reply(
+      await message.reply(
         `${getPaddedDate(message.createdAt)} (\`${getPaddedTime(
-          timeData.base
+          timeData.base,
         )}\` との差: \`${getTimeDiffText(
           timeData,
-          message.createdAt
-        )}\` | ${await calcRank(record)}位)`
+          message.createdAt,
+        )}\` | ${await calcRank(record)}位)`,
       )
       return
     }
@@ -67,7 +67,7 @@ client.on('messageCreate', async (message: Message) => {
       .delete()
       .then(() => null)
       .catch(() => null)
-  }, 300000) // 30秒後に削除
+  }, 300_000) // 30秒後に削除
 })
 
 client.on('interactionCreate', async (interaction) => {
@@ -94,11 +94,15 @@ export async function loadTimes() {
 }
 
 export async function scheduleSendTemplates() {
-  cron.getTasks().forEach((task) => task.stop())
+  for (const task of cron.getTasks().values()) task.stop()
   const schedules = await AppDataSource.getRepository(DBSendTemplate).find()
   for (const schedule of schedules) {
     const cronSchedule = schedule.cron
-    cron.schedule(cronSchedule, async () => sendTemplate(schedule))
+    cron.schedule(cronSchedule, () => {
+      sendTemplate(schedule).catch((error: unknown) => {
+        console.error('Failed scheduleSendTemplates', error)
+      })
+    })
   }
 }
 
@@ -119,11 +123,14 @@ async function main() {
 
 ;(async () => {
   await main()
-    .catch((error) => {
+    .catch((error: unknown) => {
       console.error(error)
       process.exitCode = 1
     })
-    .finally(async () => {
-      await AppDataSource.destroy()
+    .finally(() => {
+      AppDataSource.destroy().catch((error: unknown) => {
+        console.error(error)
+        process.exitCode = 1
+      })
     })
 })()

@@ -19,7 +19,7 @@ export function getTodayDate(time: Time): Date {
     time.hour,
     time.minute,
     time.second,
-    time.millisecond
+    time.millisecond,
   )
 }
 
@@ -36,20 +36,25 @@ export function getTimeData(
   TIMES: TimeData[],
   text: string,
   date: Date,
-  isValid: boolean
+  isValid: boolean,
 ): TimeData | null {
   const times = TIMES.filter((time) => {
     switch (time.type) {
-      case 'EQUAL':
+      case 'EQUAL': {
         return text === time.text
-      case 'START':
+      }
+      case 'START': {
         return text.startsWith(time.text)
-      case 'END':
+      }
+      case 'END': {
         return text.endsWith(time.text)
-      case 'INCLUDE':
+      }
+      case 'INCLUDE': {
         return text.includes(time.text)
-      default:
+      }
+      default: {
         return false
+      }
     }
   }).filter((time) => {
     if (!isValid) return true
@@ -90,27 +95,39 @@ export function isTimeFormat(str: string) {
 
 export function getPaddedDate(date: Date): string {
   return `${paddingZero(date.getHours())}:${paddingZero(
-    date.getMinutes()
+    date.getMinutes(),
   )}:${paddingZero(date.getSeconds())}.${paddingZero(
     date.getMilliseconds(),
-    3
+    3,
   )}`
 }
 
 export function getPaddedTime(time: Time): string {
   return `${paddingZero(time.hour)}:${paddingZero(time.minute)}:${paddingZero(
-    time.second
+    time.second,
   )}.${paddingZero(time.millisecond, 3)}`
 }
 
 export function formatDate(date: Date, format: string): string {
-  format = format.replace(/yyyy/g, String(date.getFullYear()))
-  format = format.replace(/MM/g, ('0' + (date.getMonth() + 1)).slice(-2))
-  format = format.replace(/dd/g, ('0' + date.getDate()).slice(-2))
-  format = format.replace(/HH/g, ('0' + date.getHours()).slice(-2))
-  format = format.replace(/mm/g, ('0' + date.getMinutes()).slice(-2))
-  format = format.replace(/ss/g, ('0' + date.getSeconds()).slice(-2))
-  format = format.replace(/SSS/g, ('00' + date.getMilliseconds()).slice(-3))
+  format = format.replaceAll('yyyy', String(date.getFullYear()))
+  format = format.replaceAll(
+    'MM',
+    ('0' + (date.getMonth() + 1).toString()).slice(-2),
+  )
+  format = format.replaceAll('dd', ('0' + date.getDate().toString()).slice(-2))
+  format = format.replaceAll('HH', ('0' + date.getHours().toString()).slice(-2))
+  format = format.replaceAll(
+    'mm',
+    ('0' + date.getMinutes().toString()).slice(-2),
+  )
+  format = format.replaceAll(
+    'ss',
+    ('0' + date.getSeconds().toString()).slice(-2),
+  )
+  format = format.replaceAll(
+    'SSS',
+    ('00' + date.getMilliseconds().toString()).slice(-3),
+  )
   return format
 }
 
@@ -134,10 +151,10 @@ export function getTimeDiffText(timeData: TimeData, date: Date): string {
     return `${hour}時間${minute}分${second}.${millisecond}秒`
   } else if (minute !== '00') {
     return `${minute}分${second}.${millisecond}秒`
-  } else if (second !== '00') {
-    return `${second}.${millisecond}秒`
-  } else {
+  } else if (second === '00') {
     return `0.${millisecond}秒`
+  } else {
+    return `${second}.${millisecond}秒`
   }
 }
 
@@ -152,7 +169,7 @@ export async function sendTemplate(template: DBSendTemplate) {
     console.error('channel is not text channel')
     return
   }
-  const channel = channelAny as TextChannel
+  const channel = channelAny
   const lastMessage = channel.lastMessage
   if (lastMessage && lastMessage.content === template.text) {
     return

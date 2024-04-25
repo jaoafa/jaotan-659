@@ -4,12 +4,8 @@ import {
   SlashCommandIntegerOption,
   SlashCommandSubcommandBuilder,
 } from '@discordjs/builders'
-import {
-  CacheType,
-  ChatInputCommandInteraction,
-  EmbedBuilder,
-} from 'discord.js'
-import { BaseCommand, Permission } from '.'
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
+import { BaseCommand } from '.'
 
 export class ListCommand implements BaseCommand {
   get definition(): SlashCommandSubcommandBuilder {
@@ -21,22 +17,18 @@ export class ListCommand implements BaseCommand {
           .setName('page')
           .setDescription('ページ')
           .setMinValue(1)
-          .setRequired(false)
+          .setRequired(false),
       )
   }
 
-  get permissions(): Permission[] {
-    return null
-  }
+  readonly permissions = null
 
-  async execute(
-    interaction: ChatInputCommandInteraction<CacheType>
-  ): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     await interaction.deferReply({
       ephemeral: true,
     })
 
-    const page = interaction.options.getInteger('page', false) || 1
+    const page = interaction.options.getInteger('page', false) ?? 1
 
     const items = await DBCategory.find({
       skip: (page - 1) * 20,
@@ -60,7 +52,7 @@ export class ListCommand implements BaseCommand {
           item.end
         }\`\n・登録日時: \`${formatDate(
           item.createdAt,
-          'yyyy/MM/dd HH:mm:ss'
+          'yyyy/MM/dd HH:mm:ss',
         )}\``,
         inline: true,
       })

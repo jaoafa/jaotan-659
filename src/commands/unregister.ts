@@ -4,11 +4,7 @@ import {
   SlashCommandStringOption,
   SlashCommandSubcommandBuilder,
 } from '@discordjs/builders'
-import {
-  CacheType,
-  ChatInputCommandInteraction,
-  EmbedBuilder,
-} from 'discord.js'
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
 import { BaseCommand, Permission } from '.'
 
 export class UnregisterCommand implements BaseCommand {
@@ -20,7 +16,7 @@ export class UnregisterCommand implements BaseCommand {
         new SlashCommandStringOption()
           .setName('name')
           .setDescription('時刻名')
-          .setRequired(true)
+          .setRequired(true),
       )
   }
 
@@ -33,14 +29,19 @@ export class UnregisterCommand implements BaseCommand {
     ]
   }
 
-  async execute(
-    interaction: ChatInputCommandInteraction<CacheType>
-  ): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+    if (!interaction.channel) {
+      return
+    }
     await interaction.deferReply({
       ephemeral: true,
     })
 
     const name = interaction.options.getString('name')
+    if (!name) {
+      await interaction.editReply('エラー: 時刻名が指定されていません。')
+      return
+    }
 
     const item = await DBCategory.findOne({
       where: { name },
@@ -50,8 +51,8 @@ export class UnregisterCommand implements BaseCommand {
       return
     }
 
-    await item.remove().catch(async (e) => {
-      console.error(e)
+    await item.remove().catch(async (error: unknown) => {
+      console.error(error)
       await interaction.editReply('エラー: 登録解除に失敗しました。')
     })
     await loadTimes()
@@ -65,7 +66,8 @@ export class UnregisterCommand implements BaseCommand {
           .setColor('#00ff00')
           .setFooter({
             text: interaction.user.tag,
-            iconURL: interaction.user.avatarURL(),
+            iconURL:
+              interaction.user.avatarURL() ?? interaction.user.defaultAvatarURL,
           })
           .setTimestamp(),
       ],

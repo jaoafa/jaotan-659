@@ -4,11 +4,7 @@ import {
   SlashCommandBuilder,
   SlashCommandSubcommandBuilder,
 } from '@discordjs/builders'
-import {
-  CacheType,
-  ChatInputCommandInteraction,
-  PermissionResolvable,
-} from 'discord.js'
+import { ChatInputCommandInteraction, PermissionResolvable } from 'discord.js'
 import { AddTemplateCommand } from './add-template'
 import { ListCommand } from './list'
 import { ListTemplateCommand } from './list-template'
@@ -27,9 +23,7 @@ export abstract class BaseCommand {
   /** 権限: サブコマンドの実行に必要なユーザー・ロール・パーミッション。NULLが指定された場合はすべて許可 */
   abstract get permissions(): Permission[] | null
   /** 実行: サブコマンドの実行定義 */
-  abstract execute(
-    interaction: ChatInputCommandInteraction<CacheType>
-  ): Promise<void>
+  abstract execute(interaction: ChatInputCommandInteraction): Promise<void>
 }
 
 const routes: BaseCommand[] = [
@@ -46,26 +40,34 @@ export async function registerCommands() {
     .setName('659')
     .setDescription('6:59! 6:59!')
 
-  for (const route in routes) {
-    console.log('SubCommand:', routes[route])
-    builder.addSubcommand(routes[route].definition)
+  for (const route of routes) {
+    console.log('SubCommand:', route)
+    builder.addSubcommand(route.definition)
   }
   const client = getClient()
+  if (!client.application) {
+    throw new Error('Application not found.')
+  }
   await client.application.commands.set(
     [builder.toJSON()],
-    configuration.DISCORD_GUILD_ID
+    configuration.DISCORD_GUILD_ID,
   )
 }
 
-export async function router(
-  interaction: ChatInputCommandInteraction<CacheType>
-) {
+export async function router(interaction: ChatInputCommandInteraction) {
+  if (!interaction.command) {
+    throw new Error('Command not found.')
+  }
+  if (!interaction.guild?.members) {
+    throw new Error('Guild not found.')
+  }
+
   if (interaction.command.name !== '659') {
     return
   }
   console.log(interaction.command.name, interaction.options.getSubcommand())
   const command = routes.find(
-    (route) => route.definition.name === interaction.options.getSubcommand()
+    (route) => route.definition.name === interaction.options.getSubcommand(),
   )
   if (!command) return
   if (interaction.channelId !== configuration.DISCORD_CHANNEL_ID) {
@@ -79,22 +81,25 @@ export async function router(
   if (command.permissions) {
     const permissions = command.permissions.map((permission) => {
       if (permission.identifier) {
+        const member = interaction.guild?.members.resolve(interaction.user)
+        if (!member) return false
         switch (permission.type) {
-          case 'USER':
+          case 'USER': {
             return interaction.user.id === permission.identifier
-          case 'ROLE':
-            return interaction.guild.members
-              .resolve(interaction.user)
-              .roles.cache.has(permission.identifier)
-          case 'PERMISSION':
-            return interaction.guild.members
-              .resolve(interaction.user)
-              .permissions.has(permission.identifier as PermissionResolvable)
+          }
+          case 'ROLE': {
+            return member.roles.cache.has(permission.identifier)
+          }
+          case 'PERMISSION': {
+            return member.permissions.has(
+              permission.identifier as PermissionResolvable,
+            )
+          }
         }
       }
       return true
     })
-    if (!permissions.every((permission) => permission)) {
+    if (!permissions.every(Boolean)) {
       await interaction.reply({
         content: 'このコマンドを実行する権限がありません。',
         ephemeral: true,
