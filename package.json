@@ -26,7 +26,7 @@
     "@book000/eslint-config": "1.6.10",
     "@discordjs/builders": "1.8.2",
     "@types/config": "3.3.4",
-    "@types/node": "20.14.3",
+    "@types/node": "20.14.4",
     "@types/node-cron": "3.0.11",
     "@vercel/ncc": "0.38.1",
     "config": "3.3.11",
